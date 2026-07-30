@@ -160,27 +160,32 @@ export class Engine {
     return this.scenes.find(s => s.id === id);
   }
 
-  /* 把 data-src 挂到真 src 上，成功才揭幕 */
+  /* 把 data-src 挂到真 src 上，加载成功才揭幕。
+     不要在这之前再发 HEAD 去探测：<img> 自己就有 load/error，
+     多一次往返只是多一个失败通道 —— 微信这类内置浏览器和国内代理
+     会拦掉或改写 HEAD，探测失败就再也不赋 src，占位符一直留在屏幕上。 */
   async mount(node) {
     const tasks = [];
     for (const media of [node.__poster, node.__loop]) {
       if (!media || media.__mounted) continue;
       media.__mounted = true;
-      tasks.push(
-        probe(media.dataset.src).then(ok => {
-          if (!ok) return;
-          media.src = media.dataset.src;
-          const reveal = () => media.classList.add("is-on");
+      const isImg = media.tagName === "IMG";
+      tasks.push((async () => {
+        // 循环视频是可选装饰，多数场景根本没有这个文件 ——
+        // 这里留着探测，省掉一串必然 404 的请求。静帧不能这么干：
+        // 它是必须出现的东西，探测失败就等于整屏空着。
+        if (!isImg && !(await probe(media.dataset.src))) return;
+        await new Promise(done => {
           // 尺寸拿到之后必须重排一次 —— layout() 依赖 naturalWidth
-          const ready = () => { reveal(); this.layout(); };
-          if (media.tagName === "IMG") {
-            media.complete ? ready() : media.addEventListener("load", ready, { once: true });
-          } else {
-            media.addEventListener("loadeddata", ready, { once: true });
-            media.load();
-          }
-        })
-      );
+          const ready = () => { media.classList.add("is-on"); this.layout(); done(); };
+          // 加载失败就让底下的占位图留着，但不能卡住换场
+          media.addEventListener("error", () => done(), { once: true });
+          media.addEventListener(isImg ? "load" : "loadeddata", ready, { once: true });
+          media.src = media.dataset.src;
+          if (isImg) { if (media.complete && media.naturalWidth) ready(); }
+          else media.load();
+        });
+      })());
     }
     await Promise.all(tasks);
   }
