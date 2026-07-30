@@ -563,8 +563,8 @@ export const WORKS = [
     id: "didi-au",
     order: 1,
     markets: ["Australia"],
-    hero: { value: "-30% \u2192 -10%", unit: "gross margin", fast: "OWNED THE AUSTRALIA P&L",
-            note: "Twenty points of margin, across three city launches" },
+    hero: { value: "-30% \u2192 Break Even", unit: "gross margin", fast: "OWNED THE AUSTRALIA P&L",
+            note: "Thirty points of margin, across three city launches" },
     region: "MELBOURNE \u00b7 SYDNEY \u00b7 GEELONG",
     brand: "DiDi Australia",
     url: "https://www.didiglobal.com/",
@@ -596,10 +596,10 @@ export const WORKS = [
     results: [
       { channel: "P&L \u00b7 AUSTRALIA",
         stats: [
-          ["-30% \u2192 -10%", "gross margin"],
+          ["-30% \u2192 Break Even", "gross margin"],
           ["Country level", "budget, subsidy, dispatch"],
         ],
-        note: "Twenty points of margin, mostly by paying for supply at the hours that " +
+        note: "Thirty points of margin, mostly by paying for supply at the hours that " +
               "actually needed it." },
       { channel: "LAUNCH \u00b7 3 CITIES",
         stats: [
