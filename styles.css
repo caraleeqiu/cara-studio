@@ -1509,6 +1509,15 @@ body[data-hotspots="stacked"][data-scene="projection"] .copy {
 body[data-hotspots="stacked"] .controls {
   top: 104px;
   gap: 8px;
+  /* 左边缘和声音键对齐，两行读成一列 */
+  left: var(--pad);
+  right: auto;
+}
+/* 行改成左对齐后，菜单不能再靠右展开 ——
+   LIGHTS 在最左边，靠右展开会把 190px 宽的菜单甩出屏幕左侧。 */
+body[data-hotspots="stacked"] .menu {
+  left: 0;
+  right: auto;
 }
 body[data-hotspots="stacked"] .ctrl {
   padding: 8px 13px;
