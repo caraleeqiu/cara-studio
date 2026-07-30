@@ -28,7 +28,7 @@ export default {
       kicker: "CARA IS STILL UP · ALWAYS CREATING",
       title: "Stories Worth\nStaying Up For",
       hotspots: [
-        { label: "COME ON IN", x: 0.5, y: 0.54, to: "hall",
+        { label: "STEP INSIDE", x: 0.5, y: 0.54, to: "hall",
           transition: "assets/screening/curtain.mp4", sfx: "door" },
       ],
     },

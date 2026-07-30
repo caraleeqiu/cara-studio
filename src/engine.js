@@ -40,8 +40,12 @@ export class Engine {
       document.body.dataset.fit = portrait.matches ? "contain" : "cover";
       this.layout();
     };
+    // resize 也要重算比例，不能只 layout()：layout() 读的是 body.dataset.fit，
+    // 那个值只有 applyFit 会改。只靠 media query 的 change 事件不保险 ——
+    // 它不是每个环境都发，漏一次就会横过来还用竖屏的排法。
     portrait.addEventListener("change", applyFit);
-    window.addEventListener("resize", () => this.layout());
+    window.addEventListener("resize", applyFit);
+    window.addEventListener("orientationchange", applyFit);
     applyFit();
   }
 
