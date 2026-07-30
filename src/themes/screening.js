@@ -25,8 +25,8 @@ export default {
       id: "lobby", kind: "entry", label: "lobby",
       poster: "assets/screening/lobby.jpg",
       loop: "assets/screening/lobby-idle.mp4",
-      kicker: "CARA IS STILL UP · NOW SHOWING",
-      title: "One More Screening.\nCome In.",
+      kicker: "CARA IS STILL UP · ALWAYS CREATING",
+      title: "Stories Worth\nStaying Up For",
       hotspots: [
         { label: "COME ON IN", x: 0.5, y: 0.54, to: "hall",
           transition: "assets/screening/curtain.mp4", sfx: "door" },
@@ -47,7 +47,7 @@ export default {
     {
       id: "projection", kind: "map", label: "projection", back: "hall",
       poster: "assets/screening/map-full.jpg",
-      kicker: "ON SCREEN · SIX MARKETS",
+      kicker: "ON SCREEN · FOUR MARKETS",
       title: "Where The Work\nLanded.",
       pins: true,
     },

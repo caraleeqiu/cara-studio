@@ -1410,10 +1410,69 @@ body[data-hotspots="stacked"] .sound {
   bottom: auto;
   top: clamp(54px, 7.4vh, 74px);
 }
-/* 地图那一屏不分段：地图要尽量大，光点必须留在图上 */
+/* ---- 地图那一屏（竖屏）----
+   手机上地图受宽度限制，1376×768 的图在 375 宽里只能渲染到 375×209。
+   四个光点全挤在这 209px 高的条里：美国和墨西哥圆心只差 21px，
+   而手指热区是 44px —— 点哪个全靠运气。所以竖屏不点图，
+   地图退成上方的展示图，国家改成下方的列表按钮，和房间里的做法一致。 */
 body[data-hotspots="stacked"] .scene[data-scene="projection"] .scene-media {
-  inset: 0;
-  height: auto;
+  inset: 150px 0 auto 0;
+  height: 22vh;
+}
+
+/* 光点收成列表按钮 —— 和 .hotspot 同一套视觉 */
+body[data-hotspots="stacked"] .scene .pin {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  transform: none;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(12,14,20,.72);
+  backdrop-filter: blur(14px);
+  z-index: 4;
+}
+body[data-hotspots="stacked"] .pin-dot::after { animation: none; }
+/* 提示气泡变成按钮正文：不再悬浮，直接读 */
+body[data-hotspots="stacked"] .pin-tip {
+  position: static;
+  transform: none;
+  opacity: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  backdrop-filter: none;
+  flex: 1;
+  text-align: left;            /* 和房间里的按钮对齐方式一致 */
+}
+body[data-hotspots="stacked"] .pin-tip b { font-size: 13.5px; letter-spacing: .06em; }
+/* 每个按钮 ~65px 高（国家名 + 项目数两行），按 70 排 */
+body[data-hotspots="stacked"] .scene .pin:nth-of-type(1) { bottom: 278px; }
+body[data-hotspots="stacked"] .scene .pin:nth-of-type(2) { bottom: 208px; }
+body[data-hotspots="stacked"] .scene .pin:nth-of-type(3) { bottom: 138px; }
+body[data-hotspots="stacked"] .scene .pin:nth-of-type(4) { bottom: 68px; }
+
+/* 标题挪到地图和列表之间 —— 原来落在 349px，正好压在地图画面上 */
+body[data-hotspots="stacked"][data-scene="projection"] .copy {
+  top: auto;
+  bottom: 389px;
+}
+
+/* 返回按钮加进控件行后整行涨到 0→355，撞上左上角的声音按钮。
+   缩小控件字号让它保持一行，整行下移到声音按钮下面。 */
+body[data-hotspots="stacked"] .controls {
+  top: 104px;
+  gap: 8px;
+}
+body[data-hotspots="stacked"] .ctrl {
+  padding: 8px 13px;
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  white-space: nowrap;
 }
 
 @media (max-aspect-ratio: 1/1) {

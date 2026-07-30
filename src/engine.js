@@ -122,7 +122,9 @@ export class Engine {
     const stacked = document.body.dataset.fit === "contain";
     document.body.dataset.hotspots = stacked ? "stacked" : "pinned";
     if (stacked) {
-      this.stage.querySelectorAll(".hotspot").forEach(spot => {
+      // 光点也一样收成列表。手机上地图受宽度限制只能渲染到 ~209px 高，
+      // 四个点全挤在这条里 —— 美国和墨西哥圆心只差 21px，热区却是 44px。
+      this.stage.querySelectorAll(".hotspot, .pin").forEach(spot => {
         spot.style.left = "";
         spot.style.top = "";
       });
@@ -146,8 +148,8 @@ export class Engine {
       const left = r.left + (r.width - w) / 2;
       const top  = r.top  + (r.height - h) / 2;
 
-      const sel = stacked ? ".pin" : ".hotspot, .pin";
-      node.querySelectorAll(sel).forEach(spot => {
+      if (stacked) return;          // 竖屏两种标记都由 CSS 排成列表
+      node.querySelectorAll(".hotspot, .pin").forEach(spot => {
         spot.style.left = `${left + Number(spot.dataset.x) * w}px`;
         spot.style.top  = `${top  + Number(spot.dataset.y) * h}px`;
       });
