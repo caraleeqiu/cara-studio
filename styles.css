@@ -560,6 +560,7 @@ body[data-hotspots="stacked"] .panel.is-on::before {
   border-radius: 13px;
   overflow: hidden;
   aspect-ratio: 16 / 9;
+  flex: none;                 /* .item 是列向 flex，默认会把它压扁 */
   background:
     radial-gradient(90% 80% at 30% 20%, color-mix(in srgb, var(--pin) 34%, transparent), transparent 62%),
     linear-gradient(160deg, #1e1712, #0d0b0a);
@@ -594,6 +595,17 @@ body[data-hotspots="stacked"] .panel.is-on::before {
 
 /* 品牌板封面：深色渐变底 + 居中放大的 wordmark。
    还原官方品牌板，纯 CSS 渲染，比贴图清晰而且随时能改。 */
+/* 品牌板里只有一个绝对定位的 wordmark，不贡献任何高度 ——
+   整块的高度全靠 aspect-ratio。照片卡有 <img> 撑着看不出来，
+   品牌卡一旦 aspect-ratio 没吃上（WebKit 在 flex 子项上有过这个问题）
+   就直接压成 0，整个封面消失。用 padding 顶出 16:9 做保底：
+   两种机制算出来的高度一样，谁生效都不会变形。 */
+.item-art[data-cover="brand"]::before,
+.detail-shot[data-cover="brand"]::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%;
+}
 .item-art[data-cover="brand"],
 .detail-shot[data-cover="brand"] {
   background:
