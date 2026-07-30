@@ -416,6 +416,24 @@ body[data-panel] .controls { opacity: 0; pointer-events: none; }
 }
 .panel.is-mounted { display: block; }
 .panel.is-on { opacity: 1; }
+/* 顶部固定件（品牌名、导航、声音键）压在滚动内容上，
+   面板内容滚上来就从它们底下穿过去，字叠字。给它们垫一层。
+   放在 .panel 上而不是 .topbar 上：只有面板打开时才需要，
+   场景本身的上方是暗的，不需要垫。 */
+.panel.is-on::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 116px;
+  background: linear-gradient(180deg, rgba(6,7,9,.99) 62%, rgba(6,7,9,0));
+  z-index: 1;
+  pointer-events: none;
+}
+/* 竖屏的声音键在 60–96，实色段要盖过它的下沿再开始淡出 */
+body[data-hotspots="stacked"] .panel.is-on::before {
+  height: 152px;
+  background: linear-gradient(180deg, rgba(6,7,9,.99) 68%, rgba(6,7,9,0));
+}
 
 .panel-body {
   position: absolute;
