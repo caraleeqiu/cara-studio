@@ -83,6 +83,8 @@ export default {
     music: "MUSIC",
     soundOn: "SOUND ON",
     soundOff: "SOUND OFF",
+    soundLoading: "LOADING\u2026",
+    soundError: "AUDIO FAILED",
     loading: "Warming up the projector…",
     ready: "The room is ready.",
     reelMissing: "Reel not uploaded yet",

@@ -328,6 +328,9 @@ body[data-panel] .controls { opacity: 0; pointer-events: none; }
   transition: border-color .3s var(--ease), background .3s var(--ease);
 }
 .ctrl:hover, .sound:hover { border-color: var(--accent); }
+.sound[data-state="loading"] { border-color: color-mix(in srgb, var(--accent) 50%, transparent); opacity: .75; }
+.sound[data-state="playing"] { border-color: var(--accent); color: var(--accent); }
+.sound[data-state="error"]   { border-color: color-mix(in srgb, #c2536a 60%, transparent); opacity: .8; }
 
 .menu {
   position: absolute;
@@ -1326,7 +1329,7 @@ body[data-fit="contain"] .scene::after {
 
 body[data-hotspots="stacked"] .scene-media {
   inset: 0 0 auto 0;
-  height: 46vh;              /* 图只占上部，下面留给文案和按钮 */
+  height: 42vh;              /* 图只占上部，下面留给文案和按钮 */
 }
 body[data-hotspots="stacked"] .scene::after {
   background: linear-gradient(180deg,
@@ -1372,15 +1375,15 @@ body[data-hotspots="stacked"] .hotspot-ring {
 body[data-hotspots="stacked"] .hotspot-ring::before { animation: none; }
 
 /* 三个按钮从底部往上排 */
-body[data-hotspots="stacked"] .scene .hotspot:nth-of-type(1) { bottom: 172px; }
-body[data-hotspots="stacked"] .scene .hotspot:nth-of-type(2) { bottom: 108px; }
-body[data-hotspots="stacked"] .scene .hotspot:nth-of-type(3) { bottom: 44px; }
+body[data-hotspots="stacked"] .scene .hotspot:nth-of-type(1) { bottom: 208px; }
+body[data-hotspots="stacked"] .scene .hotspot:nth-of-type(2) { bottom: 146px; }
+body[data-hotspots="stacked"] .scene .hotspot:nth-of-type(3) { bottom: 84px; }
 /* 门厅只有一个按钮 */
-body[data-hotspots="stacked"] .scene[data-scene="lobby"] .hotspot:nth-of-type(1) { bottom: 44px; }
+body[data-hotspots="stacked"] .scene[data-scene="lobby"] .hotspot:nth-of-type(1) { bottom: 84px; }
 
 /* 文案落在图和按钮之间那条带里 */
 body[data-hotspots="stacked"] .copy {
-  top: 45vh;
+  top: 43vh;
   bottom: auto;
   left: var(--pad);
   right: var(--pad);
@@ -1394,7 +1397,7 @@ body[data-hotspots="stacked"] .sound {
   left: var(--pad);
   right: auto;
   bottom: auto;
-  top: clamp(58px, 8vh, 78px);
+  top: clamp(54px, 7.4vh, 74px);
 }
 /* 地图那一屏不分段：地图要尽量大，光点必须留在图上 */
 body[data-hotspots="stacked"] .scene[data-scene="projection"] .scene-media {
@@ -1419,9 +1422,9 @@ body[data-hotspots="stacked"] .scene[data-scene="projection"] .scene-media {
   .nav { gap: 13px; }
   .nav button { font-size: 9.5px; letter-spacing: .1em; }
 
-  /* 控制条挪到左下，避开右下的声音键和文案 */
-  .controls { top: auto; bottom: clamp(24px, 4vh, 40px); left: var(--pad); right: auto; }
-  .menu { left: 0; right: auto; bottom: calc(100% + 8px); top: auto; }
+  /* 三个控件（灯光/音乐/返回）统一放顶栏下方 —— 底部整片留给主按钮组 */
+  .controls { top: clamp(54px, 7.4vh, 74px); left: auto; right: var(--pad); bottom: auto; }
+  .menu { right: 0; left: auto; top: calc(100% + 8px); bottom: auto; }
 
   .panel-close { top: clamp(16px, 3vw, 24px); }
   .chat { margin-left: 0; }

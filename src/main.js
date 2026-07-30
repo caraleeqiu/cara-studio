@@ -24,7 +24,17 @@ $("loader-mark").textContent = CONFIG.name;
 $("footer").textContent = CONFIG.footer;
 
 /* ---- 装配 ---- */
-const audio = new Audio();
+const audio = new Audio({
+  onState: state => {
+    const b = $("sound-btn");
+    const L = CONFIG.lang;
+    b.dataset.state = state;
+    b.textContent = state === "loading" ? L.soundLoading
+                  : state === "playing" ? L.soundOff
+                  : state === "error"   ? L.soundError
+                  : L.soundOn;
+  },
+});
 const chat = new Chat(CONFIG, { onState: s => (document.body.dataset.chatState = s) });
 
 const panels = new Panels(CONFIG, {
@@ -117,7 +127,6 @@ $("music-menu").addEventListener("click", e => {
   const b = e.target.closest("button");
   if (!b) return;
   audio.play(b.dataset.track);
-  if (!audio.on) setSound(true);
   $("music-menu").querySelectorAll("button").forEach(x => x.classList.toggle("is-on", x === b));
 });
 
@@ -133,11 +142,7 @@ document.addEventListener("click", () =>
   document.querySelectorAll(".menu").forEach(m => m.classList.remove("is-open")));
 
 /* ---- 声音 ---- */
-function setSound(on) {
-  if (audio.on !== on) audio.toggle();
-  $("sound-btn").textContent = audio.on ? CONFIG.lang.soundOff : CONFIG.lang.soundOn;
-}
-$("sound-btn").addEventListener("click", () => setSound(!audio.on));
+$("sound-btn").addEventListener("click", () => audio.toggle());
 
 /* ---- Esc 关面板 ---- */
 document.addEventListener("keydown", e => { if (e.key === "Escape") panels.close(); });
