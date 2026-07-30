@@ -281,6 +281,8 @@ body[data-scene] .scene.is-active { opacity: 1; pointer-events: auto; }
 .copy.is-on { opacity: 1; transform: none; }
 /* 面板打开时场景文案退场，别在背景里干扰 */
 body[data-panel] .copy { opacity: 0; transform: translateY(10px); }
+/* 面板盖住的东西不该还能点 —— 手机上按钮就在面板底下，一不小心就换了场景 */
+body[data-panel] .hotspot { opacity: 0; pointer-events: none; }
 body[data-panel] .footer { opacity: 0; }
 .copy-kicker {
   display: block;
@@ -1336,6 +1338,14 @@ body[data-hotspots="stacked"] .scene::after {
     rgba(0,0,0,.5) 0%, rgba(0,0,0,.05) 16%,
     rgba(0,0,0,.05) 40%, rgba(0,0,0,.9) 62%);
 }
+/* 竖屏下面板要盖得更实。桌面上 .62 够了，因为面板顶端压的是暗部；
+   手机上房间图正好占满上面 42vh，最亮的画面撞上最透的那一档，标题读不出来。 */
+body[data-hotspots="stacked"] .panel {
+  background: linear-gradient(180deg, rgba(6,7,9,.95), rgba(6,7,9,.99));
+}
+/* 竖屏下声音按钮挪到了顶部，正好压在面板标题上方 —— 给标题让出位置。
+   不隐藏按钮：面板里读长文的时候，静音得随时点得到。 */
+body[data-hotspots="stacked"] .panel-body { padding-top: 152px; }
 
 /* 热点变成画面下方的按钮组 */
 body[data-hotspots="stacked"] .scene .hotspot {
@@ -1351,7 +1361,8 @@ body[data-hotspots="stacked"] .scene .hotspot {
   border: 1px solid rgba(255,255,255,.15);
   background: rgba(12,14,20,.72);
   backdrop-filter: blur(14px);
-  z-index: 5;
+  /* 4 而不是 5 —— 5 会和 .panel 打平，面板开着时按钮从上面透出来 */
+  z-index: 4;
 }
 body[data-hotspots="stacked"] .hotspot-label {
   flex: 1;

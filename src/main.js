@@ -29,10 +29,12 @@ const audio = new Audio({
     const b = $("sound-btn");
     const L = CONFIG.lang;
     b.dataset.state = state;
+    // 按钮显示的是当前状态，不是「点了会发生什么」——
+    // 在响的时候写 SOUND ON，静音的时候写 SOUND OFF
     b.textContent = state === "loading" ? L.soundLoading
-                  : state === "playing" ? L.soundOff
+                  : state === "playing" ? L.soundOn
                   : state === "error"   ? L.soundError
-                  : L.soundOn;
+                  : L.soundOff;
   },
 });
 const chat = new Chat(CONFIG, { onState: s => (document.body.dataset.chatState = s) });

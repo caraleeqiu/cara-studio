@@ -68,8 +68,8 @@ export default {
     allWork: "← ALL WORK",
     backToMap: "← BACK TO THE MAP",
     openCase: "READ THE FULL STORY",
-    contactTitle: "Leave A Note",
-    contactHint: "GUEST BOOK · SIGN BEFORE YOU GO",
+    contactTitle: "Drop a Note",
+    contactHint: "GUESTBOOK · LEAVE A THOUGHT BEFORE YOU LEAVE",
     namePlaceholder: "Your name",
     notePlaceholder: "Say something…",
     noteSubmit: "PIN IT",
@@ -98,14 +98,14 @@ export default {
     greeting: "Hey, I\u2019m Cara. Welcome to the studio.",
     /* 职位名放这里，不放标题 —— 招聘方和猎头是按职位名搜的。
        想换成 Regional Growth Lead 就改这一行。 */
-    role: "Regional Marketing Manager \u00b7 International Growth",
+    role: "Regional Marketing Manager \u00b7 Global Market Expansion",
     lede:
-      "I take consumer AI products into markets where nobody has heard of us yet. " +
-      "Three things the job title will not tell you.",
+      "I scale consumer AI products in completely untapped, zero-awareness markets. " +
+      "Three things you won\u2019t find on my resume:",
     cards: [
       {
         n: "01",
-        title: "I came from research, not advertising.",
+        title: "A Non-traditional Creator",
         body:
           "Most creatives came up through advertising. I came up writing research reports." +
           "<br><br>" +
@@ -118,9 +118,9 @@ export default {
       },
       {
         n: "02",
-        title: "I still open the ad account myself.",
+        title: "I’m a Regional Marketing Manager, but I still set up the ad accounts myself.",
         body:
-          "Nine years in, and I still open the ad account myself.<br><br>" +
+          "Nine years in, and that hasn’t changed.<br><br>" +
           "Nobody has ever briefed me with \u201cgo do some influencer marketing.\u201d " +
           "The brief is: we want X ARR. What does it cost, which channels, how will we know.<br><br>" +
           "So don\u2019t ask which channel I\u2019m best at. Picking the mix <b>is</b> the job, and the mix " +
@@ -145,7 +145,7 @@ export default {
       },
     ],
     native: {
-      kicker: "HOW I WORK",
+      kicker: "BEHIND THE CREATIVE",
       body:
         "I\u2019m on Claude Code Max and I hit the daily cap more often than I should admit.<br><br>" +
         "Analysis, product prototypes, creative production: all of it runs through Claude Code, " +
