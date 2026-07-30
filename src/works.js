@@ -149,8 +149,7 @@ export const WORKS = [
               "traffic, the same pattern that later scaled on Drama.Land." },
     ],
     chips: ["Market Entry", "Macro + UGC Creators", "Creator Community", "Programmatic SEO"],
-    // 原来是 brand 模式（纯 CSS 渐变板 + wordmark）。iOS 上这块整个不显示，
-    // 而九个项目里只有它不走照片路径 —— 改回照片：同一条路，八张卡都在那条路上跑通了。
+    coverMode: "brand",     // 官方 wordmark 板：渐变底 + 图标 + 字，纯 CSS 渲染
     cover: "assets/screening/poster-roboneo.jpg",
     reel: "",
   },

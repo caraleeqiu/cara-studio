@@ -5,7 +5,7 @@
  *   2. 等能播了再 play() —— 直接对刚设 src 的元素调 play()，浏览器会 reject
  */
 
-import { AUDIO } from "./config.js";
+import { AUDIO } from "./config.js?v=1785416501";
 
 const FULL = 0.32;          // 背景音乐的目标音量，压得低一点
 

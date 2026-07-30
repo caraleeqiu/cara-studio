@@ -179,16 +179,23 @@ export class Engine {
         // 这里留着探测，省掉一串必然 404 的请求。静帧不能这么干：
         // 它是必须出现的东西，探测失败就等于整屏空着。
         if (!isImg && !(await probe(media.dataset.src))) return;
-        await new Promise(done => {
+
+        const attempt = bust => new Promise(done => {
           // 尺寸拿到之后必须重排一次 —— layout() 依赖 naturalWidth
-          const ready = () => { media.classList.add("is-on"); this.layout(); done(); };
-          // 加载失败就让底下的占位图留着，但不能卡住换场
-          media.addEventListener("error", () => done(), { once: true });
-          media.addEventListener(isImg ? "load" : "loadeddata", ready, { once: true });
-          media.src = media.dataset.src;
-          if (isImg) { if (media.complete && media.naturalWidth) ready(); }
+          const ok = () => { media.classList.add("is-on"); this.layout(); done(true); };
+          const fail = () => done(false);
+          media.addEventListener("error", fail, { once: true });
+          media.addEventListener(isImg ? "load" : "loadeddata", ok, { once: true });
+          media.src = bust ? `${media.dataset.src}?retry=${bust}` : media.dataset.src;
+          if (isImg) { if (media.complete && media.naturalWidth) ok(); }
           else media.load();
         });
+
+        // 移动网络上大图会半路断掉。只试一次的话，一断就永远停在占位符上 ——
+        // 这正是手机上看到的样子。隔一会儿再试一次，带个参数绕开可能缓存下来的坏响应。
+        if (await attempt(0)) return;
+        await new Promise(r => setTimeout(r, 900));
+        await attempt(Date.now());
       })());
     }
     await Promise.all(tasks);
