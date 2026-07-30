@@ -1329,9 +1329,14 @@ body[data-fit="contain"] .scene::after {
 /* 竖屏下不做「在画面里找热点」，改成 图 / 文案 / 按钮 三段各就各位。
    16:9 的房间图 contain 之后只有 ~200px 高，热点钉在上面点不准。 */
 
+/* 带高 = 图的实际高度。房间图是 1376×768，宽度撑满时高度就定了；
+   原来给 42vh（341px）而图只有 209px，多出来的 132px 全是黑边。 */
+body[data-hotspots="stacked"] { --art: calc(100vw * 768 / 1376); }
 body[data-hotspots="stacked"] .scene-media {
-  inset: 0 0 auto 0;
-  height: 42vh;              /* 图只占上部，下面留给文案和按钮 */
+  /* 顶上留 44px 暗带给品牌名和导航 —— 图顶到 0 的话，
+     灯光/音乐两个键正好压在灯笼和人物上，读不清也难看 */
+  inset: 44px 0 auto 0;
+  height: var(--art);
 }
 body[data-hotspots="stacked"] .scene::after {
   background: linear-gradient(180deg,
@@ -1392,15 +1397,22 @@ body[data-hotspots="stacked"] .scene .hotspot:nth-of-type(3) { bottom: 84px; }
 /* 门厅只有一个按钮 */
 body[data-hotspots="stacked"] .scene[data-scene="lobby"] .hotspot:nth-of-type(1) { bottom: 84px; }
 
-/* 文案落在图和按钮之间那条带里 */
+/* 文案落在图和按钮之间那条带里，并在带内垂直居中 ——
+   原来钉在 43vh，图带底下先空 22px、文案下面又空 104px，
+   一头紧一头松，看着像没排完。 */
 body[data-hotspots="stacked"] .copy {
-  top: 43vh;
+  top: calc(44px + var(--art));
   bottom: auto;
   left: var(--pad);
   right: var(--pad);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+/* 上边缘接图，下边缘留给按钮组，中间居中 —— 按钮数不同，留的高度也不同 */
+body[data-hotspots="stacked"][data-scene="lobby"] .copy { bottom: 166px; }
+body[data-hotspots="stacked"][data-scene="hall"]  .copy { bottom: 290px; }
 body[data-hotspots="stacked"] .copy-title { font-size: clamp(26px, 6.8vw, 38px); }
-/* 门厅只有一个按钮，文案可以往下坐一点 */
 
 
 /* 声音键挪到左下，不压按钮 */
