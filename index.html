@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CARA</title>
+  <meta name="description" content="A screening room you can walk into. Selected work, mapped.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="is-loading" data-scene="">
+
+  <!-- 开场加载 -->
+  <div class="loader" id="loader">
+    <div class="loader-mark" id="loader-mark"></div>
+    <div class="loader-bar"><i id="loader-fill"></i></div>
+    <div class="loader-status" id="loader-status">Warming up the projector…</div>
+  </div>
+
+  <!-- 场景图层（由 JS 按 config 渲染） -->
+  <main class="stage" id="stage"></main>
+
+  <!-- 过场视频层 -->
+  <video class="transition" id="transition" muted playsinline preload="none"></video>
+
+  <!-- 顶部 -->
+  <header class="topbar">
+    <button class="brand" id="brand" type="button"></button>
+    <nav class="nav" id="nav"></nav>
+  </header>
+
+  <!-- 场景文案 -->
+  <div class="copy" id="copy">
+    <span class="copy-kicker" id="copy-kicker"></span>
+    <h1 class="copy-title" id="copy-title"></h1>
+  </div>
+
+  <!-- 右上角控制 -->
+  <div class="controls" id="controls">
+    <div class="ctrl-group">
+      <button class="ctrl" id="mood-btn" type="button">LIGHTS</button>
+      <div class="menu" id="mood-menu"></div>
+    </div>
+    <div class="ctrl-group">
+      <button class="ctrl" id="music-btn" type="button">MUSIC</button>
+      <div class="menu" id="music-menu"></div>
+    </div>
+    <button class="ctrl" id="back-btn" type="button" hidden>BACK</button>
+  </div>
+
+  <!-- 右下角 -->
+  <button class="sound" id="sound-btn" type="button">SOUND ON</button>
+
+  <!-- 面板容器 -->
+  <div class="panels" id="panels"></div>
+
+  <footer class="footer" id="footer"></footer>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

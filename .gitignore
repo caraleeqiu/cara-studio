@@ -1,0 +1,12 @@
+# 绝不进版本库：里面是 API key
+.env
+
+# 生成过程的中间产物（挑图时的变体）
+assets/screening/*-1.jpg
+assets/screening/*-2.jpg
+assets/screening/*-3.jpg
+assets/screening/hall-b.jpg
+assets/screening/hall-c.jpg
+assets/_v1_film/
+
+.DS_Store
