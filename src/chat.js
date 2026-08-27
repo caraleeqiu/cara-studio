@@ -1,7 +1,7 @@
 /* 柜台 / 散场对话。
    接上 Worker 走流式；没接则用本地兜底，站点照样能演。 */
 
-import { CHAT_WORKER } from "./config.js?v=1785416501";
+import { CHAT_WORKER } from "./config.js?v=1787808123";
 
 const el = (tag, cls, html) => {
   const n = document.createElement(tag);

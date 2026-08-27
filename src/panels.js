@@ -1,8 +1,8 @@
 /* 浮在场景之上的面板：作品 / 聊天 / 留言。
    面板不换场景 —— 背景永远是同一个放映厅，用户不会迷路。 */
 
-import { WORKS } from "./works.js?v=1785416501";
-import { CHAT_WORKER } from "./config.js?v=1785416501";
+import { WORKS } from "./works.js?v=1787808123";
+import { CHAT_WORKER } from "./config.js?v=1787808123";
 
 const el = (tag, cls, html) => {
   const n = document.createElement(tag);

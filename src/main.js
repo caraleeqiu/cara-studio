@@ -1,11 +1,11 @@
 /* 装配。 */
 
-import { CONFIG, AUDIO, MOODS } from "./config.js?v=1785416501";
-import { WORKS, MARKETS } from "./works.js?v=1785416501";
-import { Engine } from "./engine.js?v=1785416501";
-import { Panels } from "./panels.js?v=1785416501";
-import { Chat } from "./chat.js?v=1785416501";
-import { Audio } from "./audio.js?v=1785416501";
+import { CONFIG, AUDIO, MOODS } from "./config.js?v=1787808123";
+import { WORKS, MARKETS } from "./works.js?v=1787808123";
+import { Engine } from "./engine.js?v=1787808123";
+import { Panels } from "./panels.js?v=1787808123";
+import { Chat } from "./chat.js?v=1787808123";
+import { Audio } from "./audio.js?v=1787808123";
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));

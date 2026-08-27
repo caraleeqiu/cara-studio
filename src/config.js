@@ -3,8 +3,8 @@
    ?v=screening  → 深夜放映厅
    不带参数时用 DEFAULT。 */
 
-import store from "./themes/store.js?v=1785416501";
-import screening from "./themes/screening.js?v=1785416501";
+import store from "./themes/store.js?v=1787808123";
+import screening from "./themes/screening.js?v=1787808123";
 
 const DEFAULT = "screening";
 const THEMES = { store, screening };
