@@ -14,6 +14,72 @@ export const MARKETS = [
 
 export const WORKS = [
   {
+    id: "actionway",
+    order: 1,          // 2026 年内排最左 —— 投产品岗，这条要先被读到
+
+    markets: ["United States"],
+    hero: { value: "800+", unit: "capabilities shipped", fast: "PRODUCT DESIGN + REVENUE",
+            note: "84 model routes and 715 data endpoints \u2014 and a written rule for what never gets built" },
+    region: "GLOBAL \u00b7 ENGLISH-FIRST",
+    brand: "PawLogic",
+    url: "https://actionway.ai",
+    logo: { text: "Actionway", style: "geometric" },
+    year: "2026",
+    title: "Actionway",
+    tag: "0\u21921 Product & Monetization",
+    runtime: "14:00",
+    blurb: "An AI capability gateway for people who use coding agents but do not write code.",
+    accent: "#7c9cd8",
+    role: "Product Lead \u00b7 Owns product design and revenue",
+    logline:
+      "A gateway is only as good as what it refuses to carry. I own the catalog, the pricing, " +
+      "and the operating model behind the revenue number.",
+    context:
+      "<b>Context</b>\u3000Actionway resells AI capability \u2014 models, media generation, social data \u2014 " +
+      "through a CLI and an agent skill. The users are the fast-growing group who run Claude Code or Codex " +
+      "for writing, research and file work, and who will never open an API console. " +
+      "I own product design and the revenue line.<br><br>" +
+      "<b>Insight</b>\u3000The obvious move for a gateway is to carry everything. It is the wrong one. " +
+      "A caller who already runs an agent brings their own language model, so reselling general text " +
+      "completion adds a margin to something they already have. What is worth paying for is what the agent " +
+      "<b>cannot</b> run on the machine in front of it. I wrote that into a five-part test \u2014 access, " +
+      "compute, scale, cost, and licensing \u2014 and it is now the thing a proposed capability has to pass.<br><br>" +
+      "<b>Move</b>\u3000Cut general text routing from the roadmap. Kept translation, scraping and OCR, " +
+      "where the value is batch and infrastructure rather than the model. Designed the wallet and the " +
+      "first-recharge mechanics, and built the operating model that ties registrations, deposit rate, " +
+      "ARPU and take rate to a single revenue number.",
+    results: [
+      { channel: "CATALOG \u00b7 PRIORITIZATION",
+        stats: [
+          ["800+", "capabilities live"],
+          ["30", "on the roadmap: 9 P0, 14 P1, 7 P2"],
+        ],
+        note: "84 model routes plus 715 social-data endpoints. The roadmap is ranked by one rule \u2014 " +
+              "build an API only for what an agent cannot run locally \u2014 which is also why general " +
+              "text routing was cut rather than shipped." },
+      { channel: "MONETISATION \u00b7 WALLET",
+        stats: [
+          ["+80%", "first-recharge bonus"],
+          ["3 of 7", "proposed changes cut before build"],
+        ],
+        note: "Prepaid wallet with pricing shown at the point of choice rather than after the bill. " +
+              "The design doc separates what ships, what is blocked upstream, and what we decline \u2014 " +
+              "email and push were declined, not deferred." },
+      { channel: "OPERATING MODEL \u00b7 PLAN",
+        stats: [
+          ["$10M", "ARR plan to Mar 2027"],
+          ["10", "identity checks across the model"],
+        ],
+        note: "A plan I own, not a result \u2014 the product is early. Its value is that it is falsifiable: " +
+              "referral step 3\u21922 raises the paid-acquisition need 48%, and take rate 15%\u219225% takes " +
+              "40% off the whole thing. Those two lines decide the number." },
+    ],
+    chips: ["0\u21921 Product", "Pricing & Packaging", "Capability Roadmap", "Unit Economics"],
+    cover: "assets/screening/poster-actionway.jpg",
+    reel: "",
+  },
+
+  {
     id: "dramaland",
     order: 3,
     markets: ["United States"],
@@ -112,7 +178,7 @@ export const WORKS = [
       "campaign ends, which paid reach never does.<br><br>" +
       "<b>Move</b>\u3000Breakout videos to pull installs, a 200-plus creator community held together " +
       "by challenges and a template revenue share, and a tool-page pipeline for organic. " +
-      "Everything localised to Portuguese first rather than translated from English.",
+      "Everything localized to Portuguese first rather than translated from English.",
     /* 榜单和 IG 播放量都是第三方可见的，比自报数字硬 */
     results: [
       { channel: "CHARTS \u00b7 BRAZIL + 10 MARKETS",

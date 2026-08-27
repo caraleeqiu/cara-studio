@@ -90,7 +90,7 @@ TECH_LOOK = (
     "No warm lamps, no cosy furniture, no people talking, no domestic setting. "
     "Absolutely no readable text, no lettering, no logos, no watermark, no UI labels."
 )
-TECH_COVERS = {"poster-creative", "poster-roboneo"}
+TECH_COVERS = {"poster-creative", "poster-roboneo", "poster-actionway"}
 BRIGHT_COVERS = {"poster-99", "poster-didi-mx", "poster-didi-au"}
 
 # 明亮商业广告调：日光、饱和、干净。用于消费品牌类项目。
@@ -236,6 +236,20 @@ SHOTS = {
         "Palette dominated by bright taxi yellow #FFD400 against sky blue and glass grey. "
         "Commercial, friendly, everyday. NOT a celebrity, an ordinary person. "
         "Composition: the woman right of centre, open street and sky across the LOWER LEFT."
+    ),
+
+    "poster-actionway": (
+        "A dark studio interior. From the LEFT edge, dozens of fine luminous filaments of different "
+        "colours stream inward through the air \u2014 loose, uneven, tangled, each on its own path. "
+        "They all pass through a single upright aperture standing in the middle distance: a tall, "
+        "thin slot of pure white light, edge-on, almost architectural. "
+        "On the RIGHT side of the aperture the same filaments continue, but now parallel, evenly "
+        "spaced and perfectly ordered, receding into the dark. "
+        "The only light in the frame is the filaments and the slot. Faint haze catches the glow. "
+        "Palette strictly cool white #f2f6ff, pale amber #e8b06a, soft periwinkle #7c9cd8, near-black. "
+        "No people, no furniture, no devices, no screens showing content. "
+        "Composition: the aperture slightly left of centre, ordered filaments and empty black "
+        "filling the RIGHT THIRD of the frame."
     ),
 
     "poster-roboneo": (
