@@ -48,3 +48,50 @@ COMMAND_SCHEMA = {
     "required": ["intent", "args", "say", "confidence"],
     "additionalProperties": False,
 }
+
+
+# ---------------------------------------------------------------- 派活
+# 一句话拆成几件事。每件事一个 worker 去干，互不等待。
+
+from typing import Literal
+
+
+class Task(BaseModel):
+    id: str = Field(description="短 id：a、b、c")
+    worker: Literal["claude_code", "local"] = Field(
+        description="claude_code 干需要思考的活；local 干秒回的本地动作")
+    action: str = Field(description="local 的动作：switch_app / open_url / dictate；claude_code 固定填 run")
+    instruction: str = Field(description="交代给 worker 的话，写清楚要什么结果")
+    needs_confirm: bool = Field(description="发送、删除、付款、给别人发消息一律 true")
+    notify: bool = Field(description="干完要不要推通知")
+
+
+class TaskList(BaseModel):
+    tasks: list[Task]
+    say: str = Field(description="念回给用户的一句话，列出几件事，二十字以内")
+
+
+TASKLIST_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "tasks": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "string"},
+                    "worker": {"type": "string", "enum": ["claude_code", "local"]},
+                    "action": {"type": "string"},
+                    "instruction": {"type": "string"},
+                    "needs_confirm": {"type": "boolean"},
+                    "notify": {"type": "boolean"},
+                },
+                "required": ["id", "worker", "action", "instruction", "needs_confirm", "notify"],
+                "additionalProperties": False,
+            },
+        },
+        "say": {"type": "string"},
+    },
+    "required": ["tasks", "say"],
+    "additionalProperties": False,
+}
