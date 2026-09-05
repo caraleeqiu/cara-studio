@@ -46,10 +46,16 @@ class Dispatcher:
         return ids
 
     def _unique(self, tid: str) -> str:
-        base, n = tid, 2
-        while tid in self.states:
-            tid, n = f"{base}{n}", n + 1
-        return tid
+        """id 撞了就往后排字母：第二次派活的 a 变成 b，念起来顺口。"""
+        if tid not in self.states:
+            return tid
+        for c in "abcdefghijklmnopqrstuvwxyz":
+            if c not in self.states:
+                return c
+        n = 2
+        while f"{tid}{n}" in self.states:
+            n += 1
+        return f"{tid}{n}"
 
     def _spawn(self, coro):
         t = asyncio.ensure_future(coro)

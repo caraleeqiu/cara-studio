@@ -141,7 +141,7 @@ class TestDispatcher(unittest.TestCase):
         async def go():
             d.submit(mk()); d.submit(mk()); await d.wait_all()
         run(go())
-        self.assertEqual(sorted(d.states), ["a", "a2"])
+        self.assertEqual(sorted(d.states), ["a", "b"])
 
     def test_local_worker_off_mac_only_pretends(self):
         w = LocalWorker()
@@ -162,7 +162,7 @@ class TestNtfy(unittest.TestCase):
         actions = req.get_header("Actions")
         self.assertIn("body=confirm:a", actions)
         self.assertIn("body=cancel:a", actions)
-        self.assertIn("demo-topic-reply", actions)
+        self.assertIn("demo-topic-in", actions)
 
     def test_parse_reply(self):
         self.assertEqual(parse_reply("confirm:a"), ("confirm", "a"))

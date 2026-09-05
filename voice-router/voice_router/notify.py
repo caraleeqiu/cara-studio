@@ -44,7 +44,7 @@ class NtfyNotifier:
     def __init__(self, topic: str, server: str = "https://ntfy.sh"):
         self.server = server.rstrip("/")
         self.topic = topic
-        self.reply_topic = topic + "-reply"
+        self.reply_topic = topic + "-in"      # 按钮回执和手机上派的活都进这里
 
     def push(self, title: str, body: str, task_id: str | None = None, confirmable: bool = False):
         headers = {"Title": title.encode("utf-8").decode("latin-1", "replace"),
@@ -61,8 +61,9 @@ class NtfyNotifier:
         except Exception as e:
             print(f"[ntfy] 推送失败：{e}", file=sys.stderr)
 
-    def listen(self, on_reply, loop: asyncio.AbstractEventLoop):
-        """后台线程订阅回执，收到就把 (verb, task_id) 丢回事件循环。"""
+    def listen(self, on_message, loop: asyncio.AbstractEventLoop):
+        """后台线程订阅 -in topic，每条消息原样丢回事件循环。
+        消息可能是按钮回执 confirm:a / cancel:a，也可能是手机上说的一整句话。"""
         def run():
             url = f"{self.server}/{self.reply_topic}/json"
             while True:
@@ -75,9 +76,9 @@ class NtfyNotifier:
                                 continue
                             if j.get("event") != "message":
                                 continue
-                            verb, _, tid = str(j.get("message", "")).partition(":")
-                            if verb in ("confirm", "cancel") and tid:
-                                loop.call_soon_threadsafe(on_reply, verb, tid)
+                            msg = str(j.get("message", "")).strip()
+                            if msg:
+                                loop.call_soon_threadsafe(on_message, msg)
                 except Exception as e:
                     print(f"[ntfy] 订阅断了，5 秒后重连：{e}", file=sys.stderr)
                     threading.Event().wait(5)
