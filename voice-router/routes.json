@@ -1,0 +1,43 @@
+{
+  "language": "zh",
+
+  "sinks": {
+    "console": { "type": "console" },
+    "device":  { "type": "serial", "port": "/dev/ttyUSB0", "baud": 115200 }
+  },
+
+  "intents": [
+    {
+      "name": "light",
+      "desc": "开灯、关灯、调亮度、换颜色",
+      "args": { "state": "on 或 off", "level": "亮度 0-100，没说就不给", "color": "颜色英文名，没说就不给" },
+      "examples": ["开灯", "把灯关了", "灯暗一点", "灯变成红色"],
+      "keywords": ["灯", "light", "lamp"],
+      "sink": "device"
+    },
+    {
+      "name": "music",
+      "desc": "播放、暂停、切歌、调音量",
+      "args": { "action": "play / pause / next / prev / volume", "value": "音量 0-100 或曲目名，没说就不给" },
+      "examples": ["放首歌", "暂停", "下一首", "声音小点"],
+      "keywords": ["歌", "音乐", "暂停", "music", "play", "volume"],
+      "sink": "console"
+    },
+    {
+      "name": "mode",
+      "desc": "切换场景或模式",
+      "args": { "name": "模式名，比如 night / work / party" },
+      "examples": ["切到夜间模式", "工作模式"],
+      "keywords": ["模式", "场景", "mode"],
+      "sink": "device"
+    },
+    {
+      "name": "chat",
+      "desc": "不是命令：闲聊、提问、听不清。永远可以兜底到这里",
+      "args": { "text": "原话" },
+      "examples": ["今天天气怎么样", "你是谁"],
+      "keywords": [],
+      "sink": "console"
+    }
+  ]
+}

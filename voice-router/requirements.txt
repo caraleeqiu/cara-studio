@@ -1,0 +1,12 @@
+# 核心：意图抽取
+anthropic>=1.4
+pydantic>=2
+
+# 可选：本地语音识别（没装就只能用 --text 模式）
+# faster-whisper>=1.0
+# sounddevice>=0.4
+# numpy
+
+# 可选：硬件出口，用哪个装哪个
+# pyserial>=3.5
+# paho-mqtt>=2
