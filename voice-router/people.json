@@ -1,0 +1,11 @@
+{
+  "_说明": "你嘴里的名字 → 每个 App 里的真名。查表命中直接用，没命中才搜，搜到你确认过就写回来。",
+  "老张": {
+    "wechat": "张伟 DiDi",
+    "email": "zhang.wei@example.com",
+    "slack": "@weizhang"
+  },
+  "小王": {
+    "wechat": "小王(设计)"
+  }
+}
