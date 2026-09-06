@@ -48,7 +48,11 @@ class ClaudeCodeWorker:
             print(f"[worker] 找不到 {claude_bin}，claude_code 的活会失败。", file=sys.stderr)
 
     async def run(self, task: Task) -> Result:
-        prompt = task.instruction + (DRAFT_SUFFIX if task.needs_confirm else "")
+        prompt = task.instruction
+        if task.app:
+            prompt += f"\n\n用 {task.app} 办这件事。能走接口或脚本就不要开窗口。"
+        if task.needs_confirm:
+            prompt += DRAFT_SUFFIX
         return await self._call(prompt)
 
     async def revise(self, session_id: str, text: str) -> Result:

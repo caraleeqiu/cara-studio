@@ -65,6 +65,7 @@ voice_router/
   app.py         Session：所有入口最后都调它的 handle(text)
   inbox.py       本机 HTTP 收件口，给 Siri / 快捷指令 / 菜单栏投话
   planner.py     一句话 → TaskList（Claude 结构化输出，兜底按连接词切）
+  apps.py        App 表：别名、能力默认。哪个 App 怎么定见 docs/PLAN.md 11.8
   dispatcher.py  状态机 + 并行 + 确认循环
   workers.py     claude -p / 本地动作
   notify.py      Mac 弹窗、ntfy 推送与手机回执
@@ -72,6 +73,7 @@ voice_router/
   listen.py stt.py   麦克风、本地识别
   brain.py routes.py sinks.py   第一版的硬件路由，硬件阶段再用
 firmware/esp32/  第一版固件（方向要反过来，硬件阶段重写）
+apps.json        你的 App 表，defaults 改成自己的习惯
 tools/menubar.py 菜单栏小图标，模拟交付形态
 docs/PLAN.md     方案
 docs/TRIGGERS.md 触发方式：Siri、快捷指令、菜单栏、手机、开机自启

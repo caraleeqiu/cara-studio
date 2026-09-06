@@ -11,6 +11,7 @@ import os
 import re
 import sys
 
+from .apps import Apps
 from .schema import TASKLIST_SCHEMA, Task, TaskList
 
 MODEL = "claude-opus-5"
@@ -28,15 +29,25 @@ worker 只有两种：
 - 「打开 Claude Code 查 X」不是两件事，是一件 claude_code 的事。程序不用打开窗口。
 - needs_confirm：发邮件、发消息、删东西、付钱、改别人能看到的东西，一律 true。查、读、写草稿 false。
 - notify：用户说了「推我」「好了告诉我」，或者这件事要跑超过十秒，就 true。
-- say 是念回给用户确认的一句话，格式「N 件事：A，B」，二十字以内。
+- 用哪个 App，按这个顺序定：
+  1. 点名了就用点名的（别名见下表，「vx」「wechat」都是微信）。
+  2. 没点名，从要办的事推 capability，查下表的默认。「回邮件」→ email → 默认邮箱。
+  3. 话里有线索就用线索：「老张微信上问我」→ 回他用微信；「回他」而前面刚提过 Slack → Slack。
+  4. 一种能力有好几个 App 又没线索、默认也不明显：app 留空，say 里问「用微信还是 Slack？」，不要猜。
+  app 填表里的标准名。claude_code 查资料、写东西这类不需要 App 的活，capability 填 code 或 other，app 留空。
+- say 是念回给用户确认的一句话，格式「N 件事：A，B」，二十字以内。有要问的就问在这句里。
+
+App 表：
+{apps}
 - 听不懂就一个 claude_code 的 task，instruction 写「用户说：<原话>，猜一下他要什么并去做」，say 写「没太听清，我试试」。
 """
 
 
 class Planner:
-    def __init__(self, model: str = MODEL, effort: str = "low"):
+    def __init__(self, model: str = MODEL, effort: str = "low", apps: Apps | None = None):
         self.model = model
         self.effort = effort
+        self.apps = apps or Apps()
         self._client = None
         self.live = bool(os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN"))
         if not self.live:
@@ -54,12 +65,16 @@ class Planner:
         if not text:
             return TaskList(tasks=[], say="没听到")
         if not self.live:
-            return naive_plan(text)
+            return naive_plan(text, self.apps)
         try:
-            return self._ask(text)
+            tl = self._ask(text)
         except Exception as e:
             print(f"[planner] 模型调用失败，退到切句：{e}", file=sys.stderr)
-            return naive_plan(text)
+            return naive_plan(text, self.apps)
+        for t in tl.tasks:                       # 模型写的 App 名过一遍别名表，统一成标准名
+            if t.app:
+                t.app = self.apps.resolve(t.app) or t.app
+        return tl
 
     def _ask(self, text: str) -> TaskList:
         resp = self.client.beta.messages.create(
@@ -67,7 +82,7 @@ class Planner:
             max_tokens=1024,
             betas=["server-side-fallback-2026-07-01"],
             fallbacks="default",
-            system=SYSTEM,
+            system=SYSTEM.format(apps=self.apps.describe()),
             messages=[{"role": "user", "content": text}],
             output_config={
                 "effort": self.effort,
@@ -92,19 +107,39 @@ _OPEN = re.compile(r"^(?:打开|切到|切换到|开)\s*(.+?)$")
 _CONFIRM_WORDS = ("回复", "回他", "回她", "发给", "发邮件", "发消息", "删", "付", "转账")
 
 
-def naive_plan(text: str) -> TaskList:
+def naive_plan(text: str, apps: Apps | None = None) -> TaskList:
+    apps = apps or Apps()
     parts = [p.strip(" ，,。") for p in _SPLIT.split(text) if p.strip(" ，,。")]
     tasks = []
     for i, p in enumerate(parts):
         tid = chr(ord("a") + i)
         m = _OPEN.match(p)
+        named = apps.mentioned(p)
+        app = named[0] if named else ""
         if m and len(m.group(1)) <= 8 and not re.search(r"查|帮|把|找|回|发|删|写|看|读|做", m.group(1)):
-            tasks.append(Task(id=tid, worker="local", action="switch_app", instruction=m.group(1),
-                              needs_confirm=False, notify=False))
+            tasks.append(Task(id=tid, worker="local", action="switch_app",
+                              instruction=apps.resolve(m.group(1)) or m.group(1),
+                              capability="other", app=app, needs_confirm=False, notify=False))
         else:
             # 「打开 Claude Code 查 X」里的「打开 Claude Code」是人的习惯，程序不用开窗口
             p = re.sub(r"^(?:打开|用|切到)\s*[A-Za-z][A-Za-z0-9 ]*?[A-Za-z0-9]\s*(?=[\u4e00-\u9fff])", "", p) or p
-            tasks.append(Task(id=tid, worker="claude_code", action="run", instruction=p,
+            # 点名了 App 就用它的能力；没点名从话里猜能力再查默认
+            cap = apps.apps[app]["capability"] if app else _guess_capability(p)
+            if not app and cap != "other":
+                app = apps.default_for(cap) or ""
+            tasks.append(Task(id=tid, worker="claude_code", action="run", instruction=p, capability=cap, app=app,
                               needs_confirm=any(w in p for w in _CONFIRM_WORDS), notify=True))
     say = f"{len(tasks)} 件事：" + "，".join(t.instruction[:8] for t in tasks) if tasks else "没听懂"
     return TaskList(tasks=tasks, say=say)
+
+
+_CAP_WORDS = [("email", ("邮件", "邮箱", "mail")), ("message", ("消息", "发给", "回他", "回她", "微信")),
+              ("notes", ("记一条", "笔记", "记下")), ("calendar", ("日程", "会议", "日历", "约")),
+              ("todo", ("提醒", "待办")), ("files", ("文件", "文件夹"))]
+
+
+def _guess_capability(text: str) -> str:
+    for cap, words in _CAP_WORDS:
+        if any(w in text for w in words):
+            return cap
+    return "other"

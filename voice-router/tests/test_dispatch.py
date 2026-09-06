@@ -54,16 +54,37 @@ class TestPlannerFallback(unittest.TestCase):
             p = Planner()
         fake = mock.Mock(stop_reason="end_turn")
         fake.content = [mock.Mock(type="text", text=json.dumps({"tasks": [
-            {"id": "a", "worker": "claude_code", "action": "run", "instruction": "查 X", "needs_confirm": False, "notify": True},
-            {"id": "a", "worker": "claude_code", "action": "run", "instruction": "回 Y", "needs_confirm": True, "notify": True},
+            {"id": "a", "worker": "claude_code", "action": "run", "instruction": "查 X", "capability": "other", "app": "", "needs_confirm": False, "notify": True},
+            {"id": "a", "worker": "claude_code", "action": "run", "instruction": "回 Y", "capability": "email", "app": "gmail", "needs_confirm": True, "notify": True},
         ], "say": "两件事"}))]
         with mock.patch.object(Planner, "client", new_callable=mock.PropertyMock) as c:
             c.return_value.beta.messages.create.return_value = fake
             tl = p.plan("查 X 同时回 Y")
             kw = c.return_value.beta.messages.create.call_args.kwargs
         self.assertEqual([t.id for t in tl.tasks], ["a", "b"])
+        self.assertEqual(tl.tasks[1].app, "Gmail")           # 模型写 gmail，统一成标准名
         self.assertEqual(kw["fallbacks"], "default")
         self.assertEqual(kw["output_config"]["format"]["schema"], TASKLIST_SCHEMA)
+
+
+class TestAppChoice(unittest.TestCase):
+    def test_named_app_wins(self):
+        t = naive_plan("用 Mail 回复老张").tasks[0]
+        self.assertEqual(t.app, "Mail"); self.assertEqual(t.capability, "email")
+
+    def test_alias(self):
+        from voice_router.apps import Apps
+        a = Apps()
+        self.assertEqual(a.resolve("vx"), "微信")
+        self.assertEqual(a.mentioned("打开 claude code 查一下"), ["Claude Code"])
+
+    def test_default_by_capability(self):
+        t = naive_plan("回复老张的邮件说周五可以").tasks[0]
+        self.assertEqual(t.app, "Gmail")                     # 没点名，email 的默认
+        self.assertEqual(naive_plan("查一下天气").tasks[0].app, "")
+
+    def test_switch_app_uses_canonical_name(self):
+        self.assertEqual(naive_plan("打开 wechat").tasks[0].instruction, "微信")
 
 
 class TestDispatcher(unittest.TestCase):

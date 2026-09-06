@@ -1,0 +1,31 @@
+{
+  "_说明": "拆任务时决定用哪个 App 的依据。defaults 是没点名时按能力选的默认；apps 里每个 App 写清楚别名和有哪几级通道。",
+
+  "defaults": {
+    "email":    "Gmail",
+    "message":  "微信",
+    "notes":    "Notion",
+    "calendar": "Google Calendar",
+    "todo":     "提醒事项",
+    "browse":   "Chrome",
+    "files":    "Finder",
+    "design":   "Figma",
+    "code":     "Claude Code"
+  },
+
+  "apps": {
+    "Gmail":           { "capability": "email",    "aliases": ["gmail", "谷歌邮箱", "邮箱"], "mcp": "Gmail", "web": "https://mail.google.com" },
+    "Mail":            { "capability": "email",    "aliases": ["mail", "苹果邮件", "邮件app"], "bundle": "com.apple.mail", "applescript": true },
+    "微信":            { "capability": "message",  "aliases": ["wechat", "weixin", "vx"], "bundle": "com.tencent.xinWeChat", "gui_only": true },
+    "Slack":           { "capability": "message",  "aliases": ["slack"], "mcp": "Slack", "web": "https://app.slack.com" },
+    "信息":            { "capability": "message",  "aliases": ["imessage", "短信", "messages"], "bundle": "com.apple.MobileSMS", "applescript": true },
+    "Notion":          { "capability": "notes",    "aliases": ["notion"], "mcp": "Notion", "web": "https://www.notion.so" },
+    "备忘录":          { "capability": "notes",    "aliases": ["notes", "苹果备忘录"], "bundle": "com.apple.Notes", "applescript": true },
+    "Google Calendar": { "capability": "calendar", "aliases": ["日历", "谷歌日历", "calendar"], "mcp": "Google Calendar", "web": "https://calendar.google.com" },
+    "提醒事项":        { "capability": "todo",     "aliases": ["reminders", "提醒", "待办"], "bundle": "com.apple.reminders", "applescript": true },
+    "Chrome":          { "capability": "browse",   "aliases": ["chrome", "浏览器", "谷歌浏览器"], "bundle": "com.google.Chrome", "applescript": true },
+    "Finder":          { "capability": "files",    "aliases": ["finder", "访达", "文件"], "bundle": "com.apple.finder", "applescript": true },
+    "Figma":           { "capability": "design",   "aliases": ["figma"], "web": "https://www.figma.com" },
+    "Claude Code":     { "capability": "code",     "aliases": ["claude", "claude code", "克劳德", "cc"], "cli": "claude" }
+  }
+}
